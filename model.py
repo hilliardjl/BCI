@@ -1,4 +1,5 @@
 from os import listdir
+import tensorflow as tf
 import pandas as pd
 
 print("Attempting to load in training data...")
@@ -13,9 +14,26 @@ for f in listdir('data/'):
 right_data = pd.concat(right_frames)
 left_data = pd.concat(left_frames)
 print('Found ' + str(right_data.shape[0]/200) + ' seconds of right data, ' + str(left_data.shape[0]/200) + ' seconds of left data.')
-# model = tf.keras.models.Sqeuential([
-#
-# ])
+
+right_data['label']=0 #These labels can be changed later, just make sure they're consistent
+left_data['label']=1 #Right =0,left=1
+
+overall_data = pd.concat([right_data,left_data])
+overall_data = overall_data.reset_index(drop=True)
+labels = overall_data.pop('label')
+dataset = tf.data.Dataset.from_tensor_slices((overall_data.values,labels.values))
+dataset = dataset.shuffle(len(labels))
+print('Data successfully loaded')
+
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Dense(128,input_shape=(4,1),activation='relu'),
+    tf.keras.layers.Dropout(.2),
+    tf.keras.layers.Dense(256,activation='relu'),
+    tf.keras.layers.Dropout(.2),
+    tf.keras.layers.Dense(1,activation='sigmoid')
+])
+model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
+model.fit(dataset,epochs=1)
 #
 #
 # print("Save model to disk? Y/N")
