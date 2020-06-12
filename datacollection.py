@@ -1,5 +1,6 @@
 from pylsl import StreamInlet, resolve_stream
 import time
+import csv
 print("Looking for LSL stream...")
 
 streams = resolve_stream('type','EEG')
@@ -11,6 +12,8 @@ samples_to_collect = 200*time_to_collect #Assuming 200 Hz
 print('Input the type of data to be collected, right or left')
 direction = input()
 print('Data collection beginning in 1 second:')
+time.sleep(1)
+print('Starting data collection')
 
 data = []
 samplesCollected = 0
@@ -22,8 +25,8 @@ while samplesCollected<samples_to_collect:
 print("All data collected, beginning write process")
 
 t = time.time()
-f = open('data/'+direction + '-' + str(t) + '.txt','w+')
-for sample in data:
-    f.write(str(sample) + '\n')
+with open('data/'+direction+'-'+str(t)+'.csv','w+',newline='') as csvfile:
+    writer = csv.writer(csvfile,delimiter=',',)
+    for sample in data:
+        writer.writerow(sample)
 print("Data written")
-
