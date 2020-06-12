@@ -1,6 +1,11 @@
 from os import listdir
+import os
+import time
+import numpy as np
 import tensorflow as tf
 import pandas as pd
+import logging
+
 
 print("Attempting to load in training data...")
 right_frames = []
@@ -20,11 +25,18 @@ left_data['label']=1 #Right =0,left=1
 
 overall_data = pd.concat([right_data,left_data])
 overall_data = overall_data.reset_index(drop=True)
-labels = overall_data.pop('label')
-dataset = tf.data.Dataset.from_tensor_slices((overall_data.values,labels.values))
-dataset = dataset.shuffle(len(labels))
-print('Data successfully loaded')
 
+labels = overall_data.pop('label')
+labels = np.asarray(labels).astype('float32').reshape(-1,1)
+dataset = tf.data.Dataset.from_tensor_slices((overall_data.values,labels))
+dataset = dataset.shuffle(len(labels))
+
+#Split into training and testing
+train_data = dataset.take(int(.8*len(labels)))
+val_data = dataset.skip(int(.8*len(labels)))
+
+
+print('Data successfully loaded')
 model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(128,input_shape=(4,1),activation='relu'),
     tf.keras.layers.Dropout(.2),
@@ -33,14 +45,18 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(1,activation='sigmoid')
 ])
 model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
-model.fit(dataset,epochs=1)
-#
-#
-# print("Save model to disk? Y/N")
-# save_action = str(input())
-# if save_action.lower()=='y':
-#     model.save('saved_model.h5')
-#     print('Model saved')
+model.fit(train_data,validation_data=val_data,epochs=5)
+
+
+print("Save model to disk? Y/N")
+save_action = str(input())
+if save_action.lower()=='y':
+    print("Model name?")
+    name = input()
+    if name == '':
+        name = str(time.time())
+    model.save('models/saved_model-' + name + '.h5')
+    print('Model saved')
 
 
 
