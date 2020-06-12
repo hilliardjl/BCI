@@ -1,16 +1,28 @@
-import tensorflow as tf
-import numpy as np
+from os import listdir
+import pandas as pd
 
 print("Attempting to load in training data...")
-#Training data...
-
-
-print("Building model")
-
-model = tf.keras.models.Sqeuential([
-    tf.keras.layers.
-])
-
+right_frames = []
+left_frames = []
+for f in listdir('data/'):
+    df = pd.read_csv('data/'+f,header = None)
+    if 'right' in f:
+        right_frames.append(df)
+    else:
+        left_frames.append(df)
+right_data = pd.concat(right_frames)
+left_data = pd.concat(left_frames)
+print('Found ' + str(right_data.shape[0]/200) + ' seconds of right data, ' + str(left_data.shape[0]/200) + ' seconds of left data.')
+# model = tf.keras.models.Sqeuential([
+#
+# ])
+#
+#
+# print("Save model to disk? Y/N")
+# save_action = str(input())
+# if save_action.lower()=='y':
+#     model.save('saved_model.h5')
+#     print('Model saved')
 
 
 
