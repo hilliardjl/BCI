@@ -7,7 +7,7 @@ streams = resolve_stream('type','EEG')
 
 inlet = StreamInlet(streams[0])
 
-time_to_collect = 1
+time_to_collect = 20
 samples_to_collect = 200*time_to_collect #Assuming 200 Hz
 print('Input the type of data to be collected, right or left')
 direction = input()
