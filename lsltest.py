@@ -7,4 +7,4 @@ inlet = StreamInlet(streams[0])
 lst = []
 while True:
     sample, timestamp = inlet.pull_sample()
-    print(sample)
+    print(str(timestamp))

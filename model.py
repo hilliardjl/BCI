@@ -8,8 +8,8 @@ import pandas as pd
 print("Attempting to load in training data...")
 right_frames = []
 left_frames = []
-for f in listdir('data/'):
-    df = pd.read_csv('data/'+f,header = None)
+for f in listdir('FFTdata/'):
+    df = pd.read_csv('FFTdata/'+f,header = None)
     if 'right' in f:
         right_frames.append(df)
     else:
@@ -28,20 +28,24 @@ train= overall_data.sample(frac=.9,random_state=0)
 test = overall_data.drop(train.index)
 train_labels = train.pop('label')
 test_labels = test.pop('label')
+train = np.reshape(np.asarray(train),(len(train),125,1))
+test = np.reshape(np.asarray(test),(len(test),125,1))
+print(train)
+print(train.shape)
 print('Data successfully loaded')
 
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(512,activation='relu',input_shape=[4]),
-    tf.keras.layers.Dropout(.2),
-    tf.keras.layers.Dense(1024,activation='relu'),
-    tf.keras.layers.Dropout(.2),
+    tf.keras.layers.Conv1D(filters = 16, kernel_size=3,input_shape = (125,1)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(32,activation='relu'),
     tf.keras.layers.Dense(1,activation='sigmoid')
 ])
+print(model.summary())
 model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
-model.fit(train,train_labels,validation_data = (test,test_labels),epochs=10)
+model.fit(train,train_labels,validation_data = (test,test_labels),epochs=1)
 
-print("Prediction: ")
-print(model.predict(np.reshape(np.array([-10,-10,-10,-10]),(1,4)))) #wtf...
+print("Example Prediction: ")
+print(model.predict(np.reshape(np.array(range(125)),(1,125,1)))) #wtf...
 
 print("Save model to disk? Y/N")
 save_action = str(input())
