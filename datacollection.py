@@ -1,4 +1,5 @@
 from pylsl import StreamInlet, resolve_stream
+from playsound import playsound
 import time
 import csv
 print("Looking for LSL stream...")
@@ -23,6 +24,7 @@ while samplesCollected<samples_to_collect:
     samplesCollected+=1
 
 print("All data collected, beginning write process")
+playsound('alert.mp3')
 
 t = time.time()
 with open('data/'+direction+'-'+str(t)+'.csv','w+',newline='') as csvfile:

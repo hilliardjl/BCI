@@ -12,7 +12,7 @@ HEIGHT = 500
 WIDTH = 500
 screen = pg.display.set_mode((WIDTH,HEIGHT))
 clock = pg.time.Clock()
-model = tf.keras.models.load_model('models/saved_model-asdf.h5')
+model = tf.keras.models.load_model('models/saved_model-latest.h5')
 print('Model loaded, now establishing connection to LSL stream')
 # Establish connection to LSL stream
 streams = resolve_stream('type','EEG')

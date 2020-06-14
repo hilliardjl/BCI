@@ -24,16 +24,16 @@ left_data['label']=1 #Right =0,left=1
 overall_data = pd.concat([right_data,left_data])
 overall_data = overall_data.reset_index(drop=True)
 
-train= overall_data.sample(frac=.8,random_state=0)
+train= overall_data.sample(frac=.9,random_state=0)
 test = overall_data.drop(train.index)
 train_labels = train.pop('label')
 test_labels = test.pop('label')
 print('Data successfully loaded')
 
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(128,activation='relu',input_shape=[4]),
+    tf.keras.layers.Dense(512,activation='relu',input_shape=[4]),
     tf.keras.layers.Dropout(.2),
-    tf.keras.layers.Dense(256,activation='relu'),
+    tf.keras.layers.Dense(1024,activation='relu'),
     tf.keras.layers.Dropout(.2),
     tf.keras.layers.Dense(1,activation='sigmoid')
 ])
@@ -41,7 +41,7 @@ model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
 model.fit(train,train_labels,validation_data = (test,test_labels),epochs=10)
 
 print("Prediction: ")
-print(model.predict(np.reshape(np.array([10,10,10,10]),(1,4)))) #wtf...
+print(model.predict(np.reshape(np.array([-10,-10,-10,-10]),(1,4)))) #wtf...
 
 print("Save model to disk? Y/N")
 save_action = str(input())
