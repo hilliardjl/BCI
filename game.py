@@ -4,6 +4,7 @@ import numpy as np
 from pylsl import StreamInlet, resolve_stream
 import tensorflow as tf
 
+CONFIDENCE_LEVEL = .65
 
 #PyGame boilerplate setup
 pg.init()
@@ -12,7 +13,7 @@ HEIGHT = 500
 WIDTH = 500
 screen = pg.display.set_mode((WIDTH,HEIGHT))
 clock = pg.time.Clock()
-model = tf.keras.models.load_model('models/saved_model-latest.h5')
+model = tf.keras.models.load_model('models/saved_model-fft.h5')
 print('Model loaded, now establishing connection to LSL stream')
 # Establish connection to LSL stream
 streams = resolve_stream('type','EEG')
@@ -33,19 +34,23 @@ while cont:
     pg.draw.rect(screen,(255,255,255),(box_x-10,(HEIGHT/2)-10,20,20))
 
     #Prediction
-    sample,timestamp = inlet.pull_sample()
-    print(sample)
-    prediction = model.predict(np.reshape(np.array(sample),(1,4)))
-    print("Value pulled: " + str(sample))
+    sample_list = []
+    for i in range(4):
+        sample,timestamp = inlet.pull_sample()
+        sample_list.append(sample[:60])
+        print(sample)
+    prediction = model.predict(np.asarray(sample_list).reshape(1,4,60))
+    print("Value pulled: " + str(sample_list))
     print("Prediction: " + str(prediction))
 
     #Calculates the velocity of the box to be +.01 if prediction = 0 (right think), otherwise -.01 if prediction = 1 (left)
-    vel = -.02 * prediction + .01
+    if prediction[0][0] > CONFIDENCE_LEVEL:
+        box_x-=delta*.01
+    elif prediction[0][1] > CONFIDENCE_LEVEL:
+        box_x+=delta*.01
 
-    #Movement
     #Force FPS to be at 30, I'm worried about the game running to fast for predictions to take effect.
     delta = clock.tick(30)
-    box_x+=delta*vel
     for event in pg.event.get():
         if event.type == pg.QUIT:
             cont = False
