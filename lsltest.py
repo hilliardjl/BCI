@@ -5,6 +5,6 @@ streams = resolve_stream("type",'EEG')
 
 inlet = StreamInlet(streams[0])
 lst = []
-while True:
+for i in range(4):
     sample, timestamp = inlet.pull_sample()
-    print(str(timestamp))
+    print(str(timestamp) + str(sample))
