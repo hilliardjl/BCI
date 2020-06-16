@@ -1,5 +1,4 @@
 # BCI
-![Demo](demo.jpg)
 This repo is my first shot at using OpenBCI for actual computer control tasks. I started out with the simple goal of classifying a person's thoughts into left versus right, which I thought was going to be much easier than it actually was. Mainly, most of the research that has been done in this field has involved more advanced hardware (16+ channel boards) rather than the 4-channel Ganglion that I had available. Although my results definitely aren't as impressive as those, this was more to prove that the same task could be done somewhat accurately with less advanced hardware. 
 
 # Demo
