@@ -30,7 +30,7 @@ All that was used for this project was an OpenBCI [Ganglion](https://shop.openbc
 
 Here's my electrode placement:
 
-!(/electode_placement.jpg)
+![electrodes](/electode_placement.jpg)
 
 # Credits
 Huge thanks to: 
