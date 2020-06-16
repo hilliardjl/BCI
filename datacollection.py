@@ -9,7 +9,7 @@ streams = resolve_stream('type','EEG')
 
 inlet = StreamInlet(streams[0])
 
-time_to_collect = 10
+time_to_collect = 20
 samples_to_collect = 25*time_to_collect #Time series data was 200Hz, but FFT appears to be only 100. Because we have 4 channels, we reduce the time for a whole measurement down to 25 Hz.
 print('Input the type of data to be collected, right or left')
 direction = input()

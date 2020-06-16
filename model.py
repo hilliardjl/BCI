@@ -16,7 +16,7 @@ left_data = []
 
 for f in listdir('NewFFT'):
     loaded_file = np.load('NewFFT/' + f)
-    print('File ' + str(f) + ' has shape ' + str(loaded_file.shape))
+    #print('File ' + str(f) + ' has shape ' + str(loaded_file.shape))
     if 'right' in f:
         for sample in loaded_file:
            right_data.append(sample)
@@ -62,12 +62,12 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dropout(.2),
     tf.keras.layers.Dense(2,activation='softmax')
 ])
-model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
+model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 print(model.summary())
 history = model.fit(x = train_data,y = train_labels,validation_data = (val_data,val_labels),epochs=9)
 
 print("Example Prediction: ")
-print(train_data[0].shape)
+print(train_labels[0])
 print(model.predict(train_data[0].reshape(1,4,60)))
 
 print("Save model to disk? Y/N")
