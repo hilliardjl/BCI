@@ -28,6 +28,10 @@ For [game.py](https://github.com/hilliardjl/BCI/blob/master/game.py), the saved 
 # Hardware
 All that was used for this project was an OpenBCI [Ganglion](https://shop.openbci.com/products/ganglion-board?variant=13461804483) (4-channel) board, EEG paste, electrodes, and the USB dongle. 
 
+Here's my electrode placement:
+
+!(electrode_placement.jpg)
+
 # Credits
 Huge thanks to: 
 - Prof. Williams from UVA's ECE department \- he provided the hardware that allowed me to do this project!
