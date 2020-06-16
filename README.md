@@ -31,5 +31,5 @@ All that was used for this project was an OpenBCI [Ganglion](https://shop.openbc
 # Credits
 Huge thanks to: 
 - Prof. Williams from UVA's ECE department \- he provided the hardware that allowed me to do this project!
-- Sentdex ([youtube](https://www.youtube.com/user/sentdex)) After failing to get any results with raw time series data, I was doing some research and found that Sentdex had basically done exactly what I was trying to do using FFT data instead, which is why I switched over. 
+- Sentdex ([youtube](https://www.youtube.com/user/sentdex)) After failing to get any results with raw time series data, I was doing some research and found that Sentdex had basically done exactly what I was trying to do using FFT data instead, which is why I switched over. His repo was also a great reference material when I got stuck pulling only 1 channel instead of all 4.  
 - Lawhern et. al. ([Paper link](https://arxiv.org/abs/1611.08024)) Although I couldn't use their model architecture due to only having a 4 channel board, this paper gave me the idea to start using convolutions in my network. 
